@@ -1,32 +1,24 @@
 "use client";
-import "./globals.css";
-import "./data-tables-css.css";
-import "./satoshi.css";
-import { useState, useEffect } from "react";
-import Loader from "@/components/common/Loader";
+import "../globals.css";
+import "../data-tables-css.css";
+import "../satoshi.css";
+import { AntdRegistry } from "@ant-design/nextjs-registry";
+import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 
-import Sidebar from "@/components/Sidebar/Sidebar";
-import Header from "@/components/Header";
-
+const queryClient = new QueryClient();
 export default function RootLayout({
   children,
 }: {
   children: React.ReactNode;
 }) {
-  const [sidebarOpen, setSidebarOpen] = useState(false);
-
-  const [loading, setLoading] = useState<boolean>(true);
-
-  useEffect(() => {
-    setTimeout(() => setLoading(false), 1000);
-  }, []);
-
   return (
     <html lang="en">
       <body suppressHydrationWarning={true}>
-        <div className="mx-auto max-w-screen-2xl p-4 md:p-6 2xl:p-10">
-          {children}
-        </div>
+        <QueryClientProvider client={queryClient}>
+          <AntdRegistry>
+            <div className="mx-auto max-w-screen-2xl">{children}</div>
+          </AntdRegistry>
+        </QueryClientProvider>
       </body>
     </html>
   );
